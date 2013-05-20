@@ -18,12 +18,18 @@
 #include <list>
 using namespace std;
 
+inline unsigned int pow(unsigned int num, unsigned int exp)
+{
+    if(exp == 0) return 1;
+    return num * pow(num, exp - 1);
+}
+
 class Record
 {
 public:
     virtual size_t getKey() const = 0;
 protected:
-    size_t hash(string key) const
+    virtual size_t hash(string key) const
     {
         size_t sum = 0;
         for(unsigned int i = 0; i != key.length(); ++i)
@@ -61,6 +67,18 @@ public:
     bool operator!=(Student s) {return !((*this) == s);}
     bool operator<(Student s) {return ID.compare(s.ID) == -1;}
 
+protected:
+    virtual size_t hash(string key) const
+    {
+        size_t sum = 0;
+        for(unsigned int i = 0; i != key.length(); ++i)
+        {
+            unsigned int temp = (key.c_str())[i] - '0';
+            sum += pow(10, i) * temp;
+        }
+        return sum;
+    }
+
 private:
     string ID;
     string name;
@@ -93,6 +111,22 @@ public:
     bool operator!=(Course c) {return !((*this) == c);}
     bool operator<(Course c) {return code.compare(c.code) == -1;}
 
+protected:
+    virtual size_t hash(string key) const
+    {
+        size_t sum = 0;
+        for(unsigned int i = 0; i != CourseCodePrefix_LENGTH; ++i)
+        {
+            unsigned int temp = (key.c_str())[i] - 'A' + 10;
+            sum += pow(36, i) * temp;
+        }
+        for(unsigned int i = CourseCodePrefix_LENGTH; i != MAX_CourseCode_LENGTH; ++i)
+        {
+            unsigned int temp = (key.c_str())[i] - '0';
+            sum += pow(36, i) * temp;
+        }
+        return sum;
+    }
 private:
     string code;
     string name;
@@ -158,6 +192,17 @@ struct StudentIdx : public RegRecordIdx
     bool operator!=(StudentIdx idx) {return !((*this) == idx);}
     bool operator<(StudentIdx idx) {return ID.compare(idx.ID) == -1;}
 
+protected:
+    virtual size_t hash(string key) const
+    {
+        size_t sum = 0;
+        for(unsigned int i = 0; i != key.length(); ++i)
+        {
+            unsigned int temp = (key.c_str())[i] - '0';
+            sum += pow(10, i) * temp;
+        }
+        return sum;
+    }
 private:
     string ID;
 };
@@ -177,6 +222,23 @@ struct CourseIdx : public RegRecordIdx
     bool operator==(CourseIdx idx) {return code.compare(idx.code) == 0;}
     bool operator!=(CourseIdx idx) {return !((*this) == idx);}
     bool operator<(CourseIdx idx) {return code.compare(idx.code) == -1;}
+
+protected:
+    virtual size_t hash(string key) const
+    {
+        size_t sum = 0;
+        for(unsigned int i = 0; i != CourseCodePrefix_LENGTH; ++i)
+        {
+            unsigned int temp = (key.c_str())[i] - 'A' + 10;
+            sum += pow(36, i) * temp;
+        }
+        for(unsigned int i = CourseCodePrefix_LENGTH; i != MAX_CourseCode_LENGTH; ++i)
+        {
+            unsigned int temp = (key.c_str())[i] - '0';
+            sum += pow(36, i) * temp;
+        }
+        return sum;
+    }
 
 private:
     string code;

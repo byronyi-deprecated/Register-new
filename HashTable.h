@@ -11,7 +11,8 @@ template<class T>
 class HashTable
 {
 public:
-    HashTable() : _size(0) {}
+    HashTable(unsigned int num_bucket = 19) : _size(0), numBucket(num_bucket),
+        buckets(vector<DoublyLinkedList<T> >(numBucket)) {}
 
     bool insert(const T& item)
     {
@@ -48,7 +49,7 @@ public:
     list<T> items() const
     {
         list<T> items;
-        for(unsigned int i = 0; i != 19; ++i)
+        for(unsigned int i = 0; i != numBucket; ++i)
         {
             list<T> temp = buckets[i].items();
             items.splice(items.end(), temp);
@@ -59,10 +60,11 @@ public:
 private:
     HashVal hash(const T& item) const
     {
-        return item.getKey() % 19;
+        return item.getKey() % numBucket;
     }
-    DoublyLinkedList<T> buckets[19];
     unsigned int _size;
+    unsigned int numBucket;
+    vector<DoublyLinkedList<T> > buckets;
 };
 
 #endif // HASHTABLE_H

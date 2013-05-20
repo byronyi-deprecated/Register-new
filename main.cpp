@@ -1,8 +1,5 @@
 #include <iostream>
 #include "Menu.h"
-#include "Record.h"
-#include <string>
-#include <list>
 using namespace std;
 
 /*

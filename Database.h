@@ -9,6 +9,9 @@
 class Database
 {
 public:
+    Database() : studentRecord(HashTable<Student>(29)), courseRecord(HashTable<Course>(17)),
+                 studentIndex(HashTable<StudentIdx>(29)), courseIndex(HashTable<CourseIdx>(17)) {}
+
     bool doInsertStudent(const Student&);
     bool doInsertCourse(const Course&);
     bool doInsertRegistration(const Registration&);
