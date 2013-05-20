@@ -55,7 +55,6 @@ bool Database::doDeleteStudent(const string& stuID)
     for(list<Registration*>::iterator i = idx_ptr->reg.begin();
         i != idx_ptr->reg.end(); ++i) {
 
-        regRecord.remove(**i);
         string courseCode = (*i)->getCode();
 
         CourseIdx* course_idx = courseIndex.search(CourseIdx(courseCode));
@@ -63,6 +62,8 @@ bool Database::doDeleteStudent(const string& stuID)
 
         if(course_idx->reg.empty())
             courseIndex.remove(*course_idx);
+
+        regRecord.remove(**i);
 
     }
 
@@ -84,7 +85,6 @@ bool Database::doDeleteCourse(const string& code)
     for(list<Registration*>::iterator i = idx_ptr->reg.begin();
         i != idx_ptr->reg.end(); ++i) {
 
-        regRecord.remove(**i);
         string stuID = (*i)->getID();
 
         StudentIdx* stu_idx = studentIndex.search(StudentIdx(stuID));
@@ -92,6 +92,8 @@ bool Database::doDeleteCourse(const string& code)
 
         if(stu_idx->reg.empty())
             studentIndex.remove(*stu_idx);
+
+        regRecord.remove(**i);
 
     }
 
@@ -110,12 +112,16 @@ bool Database::doDeleteRegistration(const string& stuID, const string& code)
     CourseIdx* course_idx_ptr = courseIndex.search(CourseIdx(code));
 
     stu_idx_ptr->reg.remove(reg_ptr);
+
     if(stu_idx_ptr->reg.empty())
         studentIndex.remove(*stu_idx_ptr);
 
     course_idx_ptr->reg.remove(reg_ptr);
+
     if(course_idx_ptr->reg.empty())
         courseIndex.remove(*course_idx_ptr);
+
+    regRecord.remove(*reg_ptr);
 
     return true;
 }
@@ -231,7 +237,7 @@ void Database::WriteToBinary(ofstream& stream)
         stream.write(i->getName().c_str(), sizeof(char) * MAX_CourseName_LENGTH);
 
         unsigned int credit = i->getCredit();
-        stream.write((char*)credit, sizeof(unsigned int));
+        stream.write((char*)&credit, sizeof(unsigned int));
     }
 
     list<Registration> reg_list = regRecord.items();
@@ -244,7 +250,7 @@ void Database::WriteToBinary(ofstream& stream)
         stream.write(i->getCode().c_str(), sizeof(char) * MAX_CourseCode_LENGTH);
 
         unsigned int mark = i->getMark();
-        stream.write((char*)mark, sizeof(unsigned int));
+        stream.write((char*)&mark, sizeof(unsigned int));
     }
 }
 
@@ -305,7 +311,7 @@ void Database::ReadFromBinary(ifstream& stream)
         name[MAX_CourseName_LENGTH] = '\0';
 
         unsigned int credit(0);
-        stream.read((char*)credit, sizeof(unsigned int));
+        stream.read((char*)&credit, sizeof(unsigned int));
 
         doInsertCourse(Course(string(code), string(name), credit));
     }
@@ -329,7 +335,7 @@ void Database::ReadFromBinary(ifstream& stream)
         code[MAX_CourseCode_LENGTH] = '\0';
 
         unsigned int mark(NA_EXAM_MARK);
-        stream.read((char*)mark, sizeof(unsigned int));
+        stream.read((char*)&mark, sizeof(unsigned int));
 
         doInsertRegistration(Registration(string(stuID), string(code), mark));
     }
@@ -431,12 +437,6 @@ void Database::Write2HTML_CourseByStudent(ofstream&stream, const Student& studen
 {
     StudentIdx* idxPtr= studentIndex.search(StudentIdx(student.getID()));
 
-    if(!idxPtr)
-    {
-        cerr << "The database is inconsistent" << endl;
-        return;
-    }
-
     stream << "<HTML>" << endl;
     stream << "<HEAD>" << endl;
     stream << "<TITLE>Course Records for Student " << student.getID() << "</TITLE>" << endl;
@@ -447,9 +447,10 @@ void Database::Write2HTML_CourseByStudent(ofstream&stream, const Student& studen
     stream << " (" << student.getID() << ")</H2>" << endl;
     stream << "<P>" << endl;
 
-    list<Registration*> reg = idxPtr->getReg();
-    if(!reg.empty())
+    if(idxPtr && idxPtr->getReg().size() != 0)
     {
+        list<Registration*> reg = idxPtr->getReg();
+
         stream << "<TABLE cellSpacing=1 cellPadding=1 border=1>" << endl;
         stream << endl;
         stream << "<TR>" << endl;
@@ -493,12 +494,6 @@ void Database::Write2HTML_StudentByCourse(ofstream&stream, const Course& course)
 {
     CourseIdx* idxPtr= courseIndex.search(CourseIdx(course.getCode()));
 
-    if(!idxPtr)
-    {
-        cerr << "The database is inconsistent" << endl;
-        return;
-    }
-
     stream << "<HTML>" << endl;
     stream << "<HEAD>" << endl;
     stream << "<TITLE>Course Records for Course " << course.getCode() << "</TITLE>" << endl;
@@ -509,9 +504,10 @@ void Database::Write2HTML_StudentByCourse(ofstream&stream, const Course& course)
     stream << " (" << course.getCode() << ")</H2>" << endl;
     stream << "<P>" << endl;
 
-    list<Registration*> reg = idxPtr->getReg();
-    if(!reg.empty())
+    if(idxPtr && idxPtr->getReg().size() != 0)
     {
+        list<Registration*> reg = idxPtr->getReg();
+
         stream << "<TABLE cellSpacing=1 cellPadding=1 border=1>" << endl;
         stream << endl;
         stream << "<TR>" << endl;
@@ -533,6 +529,7 @@ void Database::Write2HTML_StudentByCourse(ofstream&stream, const Course& course)
             stream << "<TD>" << student.getName() << "</TD>" << endl;
             stream << "<TD>" << student.getYear() << "</TD>" << endl;
             stream << "<TD>" << ((student.getGender() == 'M')? "Male" : "Female") << "</TD>" << endl;
+            stream << "<TD>";
             if((*i)->getMark() == NA_EXAM_MARK)
                 stream << "N/A";
             else

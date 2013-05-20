@@ -410,7 +410,12 @@ void QueryRegistration::go()
     cout << endl;
     cout << "Student ID:  " << regRecord.getID() << endl;
     cout << "Course Code: " << regRecord.getCode() << endl;
-    cout << "Exam Mark:   " << regRecord.getMark() << endl;
+    cout << "Exam Mark:   ";
+    if(regRecord.getMark() == NA_EXAM_MARK)
+        cout << "N/A";
+    else
+        cout << regRecord.getMark();
+    cout << endl;
     cout << endl;
 
     return;
