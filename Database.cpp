@@ -116,6 +116,8 @@ bool Database::doDeleteRegistration(const string& stuID, const string& code)
     course_idx_ptr->reg.remove(reg_ptr);
     if(course_idx_ptr->reg.empty())
         courseIndex.remove(*course_idx_ptr);
+
+    return true;
 }
 
 
@@ -205,24 +207,17 @@ void Database::WriteToBinary(ofstream& stream)
     unsigned int student_num = stu_list.size();
 
     stream.write((char*)&student_num, sizeof(unsigned int));
-
     for(list<Student>::iterator i = stu_list.begin();
         i != stu_list.end(); ++i)
     {
-        char stuID[MAX_StuID_LENGTH];
-        strcpy(stuID, i->getID().c_str());
-        stream.write(stuID, sizeof(char) * MAX_StuID_LENGTH);
+        stream.write(i->getID().c_str(), sizeof(char) * MAX_StuID_LENGTH);
+        stream.write(i->getName().c_str(), sizeof(char) * MAX_StuName_LENGTH);
 
-        char stuName[MAX_StuName_LENGTH];
-        cout << i->getName();
-//        strcpy(stuName, i->getName().c_str());
-//        stream.write(stuName, sizeof(char) * MAX_StuName_LENGTH);
+        unsigned int year = i->getYear();
+        stream.write((char*)&year, sizeof(unsigned int));
 
-//        unsigned int year = i->getYear();
-//        stream.write((char*)&year, sizeof(unsigned int));
-
-//        char gender;
-//        stream.write((char*)&gender, sizeof(char));
+        char gender = i->getGender();
+        stream.write((char*)&gender, sizeof(char));
     }
 
 
@@ -232,13 +227,8 @@ void Database::WriteToBinary(ofstream& stream)
     for(list<Course>::iterator i = course_list.begin();
         i != course_list.end(); ++i)
     {
-        char code[MAX_CourseCode_LENGTH];
-        strcpy(code, i->getCode().c_str());
-        stream.write(code, sizeof(char) * MAX_CourseCode_LENGTH);
-
-        char name[MAX_CourseName_LENGTH];
-        strcpy(name, i->getName().c_str());
-        stream.write(name, sizeof(char) * MAX_CourseName_LENGTH);
+        stream.write(i->getCode().c_str(), sizeof(char) * MAX_CourseCode_LENGTH);
+        stream.write(i->getName().c_str(), sizeof(char) * MAX_CourseName_LENGTH);
 
         unsigned int credit = i->getCredit();
         stream.write((char*)credit, sizeof(unsigned int));
@@ -250,13 +240,8 @@ void Database::WriteToBinary(ofstream& stream)
     for(list<Registration>::iterator i = reg_list.begin();
         i != reg_list.end(); ++i)
     {
-        char stuID[MAX_StuID_LENGTH];
-        strcpy(stuID, i->getID().c_str());
-        stream.write(stuID, sizeof(char) * MAX_StuID_LENGTH);
-
-        char code[MAX_CourseCode_LENGTH];
-        strcpy(code, i->getCode().c_str());
-        stream.write(code, sizeof(char) * MAX_CourseCode_LENGTH);
+        stream.write(i->getID().c_str(), sizeof(char) * MAX_StuID_LENGTH);
+        stream.write(i->getCode().c_str(), sizeof(char) * MAX_CourseCode_LENGTH);
 
         unsigned int mark = i->getMark();
         stream.write((char*)mark, sizeof(unsigned int));
@@ -285,14 +270,13 @@ void Database::ReadFromBinary(ifstream& stream)
         if(!stream.good())
             throw string("File Corrupted");
 
-        char stuID[MAX_StuID_LENGTH];
+        char stuID[MAX_StuID_LENGTH + 1];
         stream.read(stuID, sizeof(char) * MAX_StuID_LENGTH);
-        cout << stuID;
-        string id(stuID);
+        stuID[MAX_StuID_LENGTH] = '\0';
 
-        char stuName[MAX_StuName_LENGTH];
+        char stuName[MAX_StuName_LENGTH + 1];
         stream.read(stuName, sizeof(char) * MAX_StuName_LENGTH);
-        string name(stuName);
+        stuName[MAX_StuName_LENGTH] = '\0';
 
         unsigned int year;
         stream.read((char*)&year, sizeof(unsigned int));
@@ -300,7 +284,7 @@ void Database::ReadFromBinary(ifstream& stream)
         char gender;
         stream.read((char*)&gender, sizeof(char));
 
-        doInsertStudent(Student(id, name, year, gender));
+        doInsertStudent(Student(string(stuID), string(stuName), year, gender));
     }
 
     if(!stream.good())
@@ -312,13 +296,15 @@ void Database::ReadFromBinary(ifstream& stream)
         if(!stream.good())
             throw string("File Corrupted");
 
-        char code[MAX_CourseCode_LENGTH];
+        char code[MAX_CourseCode_LENGTH + 1];
         stream.read(code, sizeof(char) * MAX_CourseCode_LENGTH);
+        code[MAX_CourseCode_LENGTH] = '\0';
 
-        char name[MAX_CourseName_LENGTH];
+        char name[MAX_CourseName_LENGTH + 1];
         stream.read(name, sizeof(char) * MAX_CourseName_LENGTH);
+        name[MAX_CourseName_LENGTH] = '\0';
 
-        unsigned int credit;
+        unsigned int credit(0);
         stream.read((char*)credit, sizeof(unsigned int));
 
         doInsertCourse(Course(string(code), string(name), credit));
@@ -334,13 +320,15 @@ void Database::ReadFromBinary(ifstream& stream)
         if(!stream.good())
             throw string("File Corrupted");
 
-        char stuID[MAX_StuID_LENGTH];
+        char stuID[MAX_StuID_LENGTH + 1];
         stream.read(stuID, sizeof(char) * MAX_StuID_LENGTH);
+        stuID[MAX_StuID_LENGTH] = '\0';
 
-        char code[MAX_CourseCode_LENGTH];
+        char code[MAX_CourseCode_LENGTH + 1];
         stream.read(code, sizeof(char) * MAX_CourseCode_LENGTH);
+        code[MAX_CourseCode_LENGTH] = '\0';
 
-        unsigned int mark;
+        unsigned int mark(NA_EXAM_MARK);
         stream.read((char*)mark, sizeof(unsigned int));
 
         doInsertRegistration(Registration(string(stuID), string(code), mark));

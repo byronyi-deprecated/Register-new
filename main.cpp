@@ -5,6 +5,7 @@
 #include <list>
 using namespace std;
 
+/*
 struct Char
 {
     Char() : c(0) {}
@@ -16,21 +17,10 @@ struct Char
     char c;
     unsigned int getKey() const {return (unsigned int) c;}
 };
+*/
 
 int main()
 {
-//    HashTable<Student> h;
-//    h.insert(Student(string("20026373"), string("YI bairen"), 1, 'F'));
-//    h.insert(Student(string("20026374"), string("YI bairen"), 1, 'F'));
-//    h.insert(Student(string("20026373"), string("YI bairen"), 1, 'F'));
-//    list<Student> l = h.items();
-//    for(list<Student>::iterator i = l.begin(); i != l.end(); ++i)
-//    {
-//        cout << i->getID() << endl;
-//        cout << i->getName() << endl;
-//        cout << i->getYear() << endl;
-//        cout << i->getGender() << endl;
-//    }
     MainMenu mainMenu;
     mainMenu.go();
     return 0;
