@@ -6,6 +6,12 @@
 #include "DoublyLinkedList.h"
 #include <string>
 
+//====================================================
+// Database object provide implementation of underlying
+// manipulation of the database system.
+//====================================================
+
+
 class Database
 {
 public:

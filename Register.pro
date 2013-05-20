@@ -3,10 +3,11 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += main.cpp \
+SOURCES += \
     Menu.cpp \
     Database.cpp \
-    Utils.cpp
+    Utils.cpp \
+    Main.cpp
 
 HEADERS += \
     Menu.h \

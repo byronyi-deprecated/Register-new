@@ -18,6 +18,26 @@
 #include <list>
 using namespace std;
 
+//=================================================================
+// This is the Definition of Record Object that would be managed by
+// the database system. New type of objects are welcomed; they are
+// expected to provide at least several APIs. See the toy case below
+// for minimal requirement.
+/*
+struct Char
+{
+    Char() : c(0) {}
+    Char(char _c) : c(_c) {}
+    Char(const Char& _char) : c(_char.c) {}
+
+    bool operator==(Char _char) {return (c == _char.c);}
+    bool operator<(Char _char) {return (c < _char.c);}
+    char c;
+    unsigned int getKey() const {return (unsigned int) c;}
+};
+*/
+//==================================================================
+
 inline unsigned int pow(unsigned int num, unsigned int exp)
 {
     if(exp == 0) return 1;

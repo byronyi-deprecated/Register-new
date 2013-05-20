@@ -51,7 +51,7 @@ void Quit::go()
 
 void MainMenu::go()
 {
-    system("cls");
+    system("clear");
     cout << "HKUST Course Registration System" << endl;
     cout << "--------------------------------" << endl;
     cout << endl;
@@ -67,7 +67,7 @@ void MainMenu::go()
     unsigned int choice = 0;
     while(true) {
 
-        cin.sync();
+        fflush(stdin);
         cin >> choice;
         if(choice > 0 && choice < 7)
             break;
@@ -80,7 +80,7 @@ void MainMenu::go()
 
 void StudentMenu::go()
 {
-    system("cls");
+    system("clear");
     cout << "HKUST Course Registration System <Student Menu>" << endl;
     cout << "-----------------------------------------------" << endl;
     cout << endl;
@@ -95,7 +95,7 @@ void StudentMenu::go()
     unsigned int choice = 0;
     while(true) {
 
-        cin.sync();
+        fflush(stdin);
         cin >> choice;
         if(choice > 0 && choice < 6)
             break;
@@ -105,13 +105,14 @@ void StudentMenu::go()
 
     try {subItem[choice - 1]->go();}
     catch(string err) {cout << err << endl << endl;}
-    system("pause");
+    cout << "Press enter to go back" << endl;
+    cin.get();
     subItem[4]->go();
 }
 
 void CourseMenu::go()
 {
-    system("cls");
+    system("clear");
     cout << "HKUST Course Registration System <Course Menu>" << endl;
     cout << "----------------------------------------------" << endl;
     cout << endl;
@@ -126,7 +127,7 @@ void CourseMenu::go()
     unsigned int choice = 0;
     while(true) {
 
-        cin.sync();
+        fflush(stdin);
         cin >> choice;
         if(choice > 0 && choice < 6)
             break;
@@ -136,13 +137,14 @@ void CourseMenu::go()
 
     try {subItem[choice - 1]->go();}
     catch(string err) {cout << err << endl << endl;}
-    system("pause");
+    cout << "Press enter to go back" << endl;
+    cin.get();
     subItem[4]->go();
 }
 
 void RegistrationMenu::go()
 {
-    system("cls");
+    system("clear");
     cout << "HKUST Course Registration System <Registration Menu>" << endl;
     cout << "----------------------------------------------------" << endl;
     cout << endl;
@@ -157,7 +159,7 @@ void RegistrationMenu::go()
     unsigned int choice = 0;
     while(true) {
 
-        cin.sync();
+        fflush(stdin);
         cin >> choice;
         if(choice > 0 && choice < 6)
             break;
@@ -167,13 +169,14 @@ void RegistrationMenu::go()
 
     try {subItem[choice - 1]->go();}
     catch(string err) {cout << err << endl << endl;}
-    system("pause");
+    cout << "Press enter to go back" << endl;
+    cin.get();
     subItem[4]->go();
 }
 
 void ReportMenu::go()
 {
-    system("cls");
+    system("clear");
     cout << "HKUST Course Registration System <Report Menu>" << endl;
     cout << "----------------------------------------------" << endl;
     cout << endl;
@@ -188,7 +191,7 @@ void ReportMenu::go()
     unsigned int choice = 0;
     while(true) {
 
-        cin.sync();
+        fflush(stdin);
         cin >> choice;
         if(choice > 0 && choice < 6)
             break;
@@ -198,13 +201,14 @@ void ReportMenu::go()
 
     try {subItem[choice - 1]->go();}
     catch(string err) {cout << err << endl << endl;}
-    system("pause");
+    cout << "Press enter to go back" << endl;
+    cin.get();
     subItem[4]->go();
 }
 
 void FileMenu::go()
 {
-    system("cls");
+    system("clear");
     cout << "HKUST Course Registration System <File Menu>" << endl;
     cout << "--------------------------------------------" << endl;
     cout << endl;
@@ -217,7 +221,7 @@ void FileMenu::go()
     unsigned int choice = 0;
     while(true) {
 
-        cin.sync();
+        fflush(stdin);
         cin >> choice;
         if(choice > 0 && choice < 4)
             break;
@@ -227,7 +231,8 @@ void FileMenu::go()
 
     try {subItem[choice - 1]->go();}
     catch(string err) {cout << err << endl << endl;}
-    system("pause");
+    cout << "Press enter to go back" << endl;
+    cin.get();
     subItem[2]->go();
 }
 
@@ -458,7 +463,7 @@ void SaveDatabase::go()
     cout << "Enter the filename: ";
     string filename;
 
-    cin.sync();
+    fflush(stdin);
     getline(cin, filename);
 
     ofstream binary(filename.c_str(), std::fstream::out | std::fstream::trunc);
@@ -472,7 +477,7 @@ void LoadDatabase::go()
     cout << "Enter the filename: ";
     string filename;
 
-    cin.sync();
+    fflush(stdin);
     getline(cin, filename);
 
     ifstream binary(filename.c_str(), std::ifstream::binary);

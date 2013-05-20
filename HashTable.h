@@ -5,6 +5,29 @@
 #include <vector>
 using namespace std;
 
+//====================================================
+// Template: hash table. Several APIs are available:
+// isEmpty(), size(), insert(), remove()
+// and search(). Convert from this container to STL
+// list container is also provided by items().
+//
+// User of this container should provide several APIs:
+// See the toy case below.
+/*
+struct Char
+{
+    Char() : c(0) {}
+    Char(char _c) : c(_c) {}
+    Char(const Char& _char) : c(_char.c) {}
+
+    bool operator==(Char _char) {return (c == _char.c);}
+    bool operator<(Char _char) {return (c < _char.c);}
+    char c;
+    unsigned int getKey() const {return (unsigned int) c;}
+};
+*/
+//====================================================
+
 typedef unsigned int HashVal;
 
 template<class T>

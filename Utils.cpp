@@ -1,8 +1,4 @@
 #include "Utils.h"
-#include "Database.h"
-#include <iostream>
-#include <string>
-#include <sstream>
 
 string getStuIDFromInput()
 {
@@ -11,7 +7,7 @@ string getStuIDFromInput()
 
     while(true)
     {
-        cin.sync();
+        fflush(stdin);
         getline(cin, ID);
         if(parseStuID(ID))
             break;
@@ -27,7 +23,7 @@ string getCodeFromInput()
 
     while(true)
     {
-        cin.sync();
+        fflush(stdin);
         getline(cin, code);
         if(parseCourseCode(code))
             break;
@@ -48,7 +44,7 @@ string getStuNameFromInput(string _name)
 
     while(true)
     {
-        cin.sync();
+        fflush(stdin);
         getline(cin, name);
         if(parseStuName(name))
             break;
@@ -71,7 +67,7 @@ unsigned int getStuYearFromInput(unsigned _year)
 
     while(true)
     {
-        cin.sync();
+        fflush(stdin);
         getline(cin, input);
 
         stringstream myStream(input);
@@ -97,7 +93,7 @@ char getStuGenderFromInput(char _gender)
 
     while(true)
     {
-        cin.sync();
+        fflush(stdin);
         getline(cin, input);
 
         stringstream myStream(input);
@@ -124,7 +120,7 @@ string getCourseNameFromInput(string _name)
 
     while(true)
     {
-        cin.sync();
+        fflush(stdin);
         getline(cin, name);
         if(parseCourseName(name))
             break;
@@ -147,7 +143,7 @@ unsigned int getCourseCreditFromInput(unsigned int _credit)
 
     while(true)
     {
-        cin.sync();
+        fflush(stdin);
         getline(cin, input);
 
         stringstream myStream(input);
@@ -173,7 +169,7 @@ unsigned int getExamMarkFromInput(unsigned int _mark)
 
     while(true)
     {
-        cin.sync();
+        fflush(stdin);
         getline(cin, input);
 
         stringstream myStream(input);

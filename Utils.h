@@ -2,8 +2,17 @@
 #define UTILS_H
 
 #include "Record.h"
+#include "Database.h"
 #include <fstream>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <cstdlib>
 using namespace std;
+
+//======================================================
+// All the utility functions for get input and parsing.
+//======================================================
 
 string getStuIDFromInput();
 string getCodeFromInput();

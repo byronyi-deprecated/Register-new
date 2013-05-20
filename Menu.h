@@ -9,6 +9,11 @@
 #include <string>
 using namespace std;
 
+//========================================================================
+// Remarkable design of Command Line Menus using OOP. Inspired by
+// http://stackoverflow.com/questions/4688055/create-menus-in-command-line
+//=========================================================================
+
 struct MenuItem
 {
     virtual void go() = 0;
