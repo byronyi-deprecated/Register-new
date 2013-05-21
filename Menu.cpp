@@ -67,8 +67,12 @@ void MainMenu::go()
     unsigned int choice = 0;
     while(true) {
 
-        fflush(stdin);
-        cin >> choice;
+        string input = "";
+        getline(cin, input);
+        if(input.empty()) continue;
+        stringstream myStream(input);
+        myStream >> choice;
+
         if(choice > 0 && choice < 7)
             break;
 
@@ -95,8 +99,12 @@ void StudentMenu::go()
     unsigned int choice = 0;
     while(true) {
 
-        fflush(stdin);
-        cin >> choice;
+        string input = "";
+        getline(cin, input);
+        if(input.empty()) continue;
+        stringstream myStream(input);
+        myStream >> choice;
+
         if(choice > 0 && choice < 6)
             break;
 
@@ -127,8 +135,12 @@ void CourseMenu::go()
     unsigned int choice = 0;
     while(true) {
 
-        fflush(stdin);
-        cin >> choice;
+        string input = "";
+        getline(cin, input);
+        if(input.empty()) continue;
+        stringstream myStream(input);
+        myStream >> choice;
+
         if(choice > 0 && choice < 6)
             break;
 
@@ -159,8 +171,12 @@ void RegistrationMenu::go()
     unsigned int choice = 0;
     while(true) {
 
-        fflush(stdin);
-        cin >> choice;
+        string input = "";
+        getline(cin, input);
+        if(input.empty()) continue;
+        stringstream myStream(input);
+        myStream >> choice;
+
         if(choice > 0 && choice < 6)
             break;
 
@@ -191,8 +207,12 @@ void ReportMenu::go()
     unsigned int choice = 0;
     while(true) {
 
-        fflush(stdin);
-        cin >> choice;
+        string input = "";
+        getline(cin, input);
+        if(input.empty()) continue;
+        stringstream myStream(input);
+        myStream >> choice;
+
         if(choice > 0 && choice < 6)
             break;
 
@@ -221,8 +241,12 @@ void FileMenu::go()
     unsigned int choice = 0;
     while(true) {
 
-        fflush(stdin);
-        cin >> choice;
+        string input = "";
+        getline(cin, input);
+        if(input.empty()) continue;
+        stringstream myStream(input);
+        myStream >> choice;
+
         if(choice > 0 && choice < 4)
             break;
 
@@ -461,10 +485,10 @@ void ReportStudentByCourse::go()
 void SaveDatabase::go()
 {
     cout << "Enter the filename: ";
-    string filename;
+    string filename = "";
 
-    fflush(stdin);
-    getline(cin, filename);
+    while(filename.empty())
+        getline(cin, filename);
 
     ofstream binary(filename.c_str(), std::fstream::out | std::fstream::trunc);
     db.WriteToBinary(binary);
@@ -475,10 +499,10 @@ void SaveDatabase::go()
 void LoadDatabase::go()
 {
     cout << "Enter the filename: ";
-    string filename;
+    string filename = "";
 
-    fflush(stdin);
-    getline(cin, filename);
+    while(filename.empty())
+        getline(cin, filename);
 
     ifstream binary(filename.c_str(), std::ifstream::binary);
     try

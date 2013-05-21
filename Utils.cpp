@@ -3,12 +3,13 @@
 string getStuIDFromInput()
 {
     cout << "Enter the student ID: ";
-    string ID;
+    string ID = "";
 
     while(true)
     {
-        fflush(stdin);
         getline(cin, ID);
+        if(ID.empty())
+            continue;
         if(parseStuID(ID))
             break;
     }
@@ -23,8 +24,9 @@ string getCodeFromInput()
 
     while(true)
     {
-        fflush(stdin);
         getline(cin, code);
+        if(code.empty())
+            continue;
         if(parseCourseCode(code))
             break;
     }
@@ -44,8 +46,9 @@ string getStuNameFromInput(string _name)
 
     while(true)
     {
-        fflush(stdin);
         getline(cin, name);
+        if(name.empty())
+            continue;
         if(parseStuName(name))
             break;
     }
@@ -67,8 +70,10 @@ unsigned int getStuYearFromInput(unsigned _year)
 
     while(true)
     {
-        fflush(stdin);
         getline(cin, input);
+
+        if(input.empty())
+            continue;
 
         stringstream myStream(input);
         myStream >> year;
@@ -93,8 +98,10 @@ char getStuGenderFromInput(char _gender)
 
     while(true)
     {
-        fflush(stdin);
         getline(cin, input);
+
+        if(input.empty())
+            continue;
 
         stringstream myStream(input);
         myStream >> gender;
@@ -120,8 +127,10 @@ string getCourseNameFromInput(string _name)
 
     while(true)
     {
-        fflush(stdin);
         getline(cin, name);
+
+        if(name.empty())
+            continue;
         if(parseCourseName(name))
             break;
     }
@@ -143,8 +152,10 @@ unsigned int getCourseCreditFromInput(unsigned int _credit)
 
     while(true)
     {
-        fflush(stdin);
         getline(cin, input);
+
+        if(input.empty())
+            continue;
 
         stringstream myStream(input);
         myStream >> credit;
@@ -169,8 +180,10 @@ unsigned int getExamMarkFromInput(unsigned int _mark)
 
     while(true)
     {
-        fflush(stdin);
         getline(cin, input);
+
+        if(input.empty())
+            continue;
 
         stringstream myStream(input);
         myStream >> mark;
